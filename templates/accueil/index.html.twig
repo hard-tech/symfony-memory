@@ -4,30 +4,17 @@
 
 {% block body %}
 <!-- Tailwind CSS example -->
-<div class="bg-gray-100 min-h-screen">
-    <!-- Header -->
-    <header class="bg-white shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <h1 class="text-3xl font-bold text-red-500">
-                    Ortho-memory            </h1>
-        </div>
-    </header>
 
-    <!-- Main content -->   
-    <main class="mt-10">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Introduction section -->
-            <div class="bg-white shadow-md rounded-lg px-6 py-8">
-                <h2 class="text-2xl font-semibold mb-4 text-center">Login pour commencer</h2>
-            </div>
-        </div>
-    </main>
+        <div>
+            <img src="{{ asset('./images/home-pic.jpg') }}" alt="Ortho-Memory" class="w-full mb-10 border-b-2 border-gray-500  border-solid">
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 py-6 mt-12">
-        <div class="max-w-7xl mx-auto text-center text-white">
-            <p>&copy; {{ "now"|date("Y") }} - Tous droits réservés. Créé avec Symfony & Tailwind CSS.</p>
+            <a  href="{{ path('app_login') }}" class="max-w-7xl mx-auto sm:px-6 lg:px-8 mt-10">
+                <!-- Introduction section -->
+                <div class="bg-white shadow-md rounded-lg px-6 py-8 mx-5 hover:translate-y-1 duration-200 hover:bg-gray-2   00">
+                    <h2 class="text-2xl font-semibold mb-4 text-center">Login pour commencer</h2>
+                </div>
+            </a>
         </div>
-    </footer>
-</div>
+    
+
 {% endblock %}
