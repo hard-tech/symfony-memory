@@ -294,6 +294,9 @@
             "config/routes/web_profiler.yaml"
         ]
     },
+    "symfonycasts/tailwind-bundle": {
+        "version": "v0.6.0"
+     },
     "symfony/webpack-encore-bundle": {
         "version": "2.2",
         "recipe": {

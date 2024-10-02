@@ -5,7 +5,7 @@ controllers:
     type: attribute
 
 AccueilRoute:
-    path: /accueil
+    path: /
     # the controller value has the format 'controller_class::method_name'
     controller: App\Controller\AccueilController::index
 
