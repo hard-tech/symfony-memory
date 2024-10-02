@@ -66,7 +66,7 @@ class Theme
         return $this;
     }
 
-    public function getType(): ?string
+    public function getType(): ?ThemeType
     {
         return $this->type;
     }
