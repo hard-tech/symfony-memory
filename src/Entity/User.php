@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -120,11 +121,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
+
     {
+
         $this->password = $password;
 
+
+
         return $this;
+
     }
 
     /**
@@ -189,10 +195,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->LastConnection;
     }
 
-    public function setLastConnection(\DateTimeInterface $LastConnection): static
+    public function setLastConnection(\DateTimeInterface $lastConnection): self
     {
-        $this->LastConnection = $LastConnection;
-
+        $this->LastConnection = $lastConnection;
+    
         return $this;
     }
 
