@@ -5,6 +5,6 @@ namespace App\Enum;
 // Class pour les langues avec un enum pour crée une entité
 enum ThemeType: string
 {
-    case audio = 'audio';
-    case visual = 'visual';
+    case IMAGE = 'image';
+    case VIDEO = 'video';
 }

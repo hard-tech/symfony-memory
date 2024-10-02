@@ -1,0 +1,15 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        bind:
+            $pixabayApiKey: '%env(PIXABAY_API_KEY)%'
+
+
+    App\:
+        resource: '../../src/*'
+        exclude: '../../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    App\Service\PixabayService:
+        arguments:
+            $pixabayApiKey: '%env(PIXABAY_API_KEY)%'
