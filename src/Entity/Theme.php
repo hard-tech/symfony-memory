@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ThemeRepository::class)]
+
 class Theme
 {
     #[ORM\Id]
@@ -70,7 +71,7 @@ class Theme
         return $this->type;
     }
 
-    public function setType(ThemeType $type): static
+    public function setType(ThemeType $type): self
     {
         $this->type = $type;
 
