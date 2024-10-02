@@ -2,66 +2,54 @@
 
 namespace App\Command;
 
-use App\Entity\Theme;
-use App\Service\PixabayService;
-use App\Enum\ThemeType;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use App\Service\PixabayService;
 
 #[AsCommand(
     name: 'app:fetch-themes',
-    description: 'Fetch themes from Pixabay and store them in the database',
+    description: 'Fetch themes from Pixabay',
 )]
 class FetchThemesCommand extends Command
 {
     private $pixabayService;
-    private $entityManager;
 
-    public function __construct(PixabayService $pixabayService, EntityManagerInterface $entityManager)
+    public function __construct(PixabayService $pixabayService)
     {
         parent::__construct();
         $this->pixabayService = $pixabayService;
-        $this->entityManager = $entityManager;
     }
 
     protected function configure(): void
     {
         $this
-            ->addArgument('query', InputArgument::REQUIRED, 'The search query for images and sounds')
-            ->addArgument('count', InputArgument::OPTIONAL, 'Number of items to fetch', 10);
+            ->addArgument('theme', InputArgument::REQUIRED, 'The theme to search for');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $query = $input->getArgument('query');
-        $count = $input->getArgument('count');
+        $theme = $input->getArgument('theme');
+        $output->writeln("Fetching themes from Pixabay for: $theme");
 
-        $images = $this->pixabayService->searchImages($query, $count);
-        $sounds = $this->pixabayService->searchSounds($query, $count);
+        $results = $this->pixabayService->searchImages([
+            'q' => $theme,
+            'per_page' => 10  // Example: limit to 10 results
+        ]);
 
-        foreach ($images as $image) {
-            $theme = new Theme();
-            $theme->setUrl($image['webformatURL']);
-            $theme->setName($image['tags']);
-            $theme->setType(ThemeType::IMAGE);
-            $this->entityManager->persist($theme);
+        if (empty($results)) {
+            $output->writeln("No images found for the theme: $theme");
+            return Command::SUCCESS;
         }
 
-        foreach ($sounds as $sound) {
-            $theme = new Theme();
-            $theme->setUrl($sound['videos']['tiny']['url']);
-            $theme->setName($sound['tags']);
-            $theme->setType(ThemeType::VIDEO);
-            $this->entityManager->persist($theme);
+        foreach ($results as $image) {
+            $output->writeln("Found image: " . $image['webformatURL']);
+            // Process each image as needed
         }
 
-        $this->entityManager->flush();
-
-        $output->writeln(sprintf('Fetched and stored %d themes', count($images) + count($sounds)));
+        $output->writeln('Finished fetching themes.');
 
         return Command::SUCCESS;
     }
