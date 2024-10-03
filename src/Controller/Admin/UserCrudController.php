@@ -45,6 +45,8 @@ class UserCrudController extends AbstractCrudController
                     'Français' => UserLanguage::Francais,
                 ])
                 ->setFormTypeOption('choice_label', fn (UserLanguage $choice) => $choice->value),
+
+            // TODO: Add registration date and last connection date fields coorectly !?
             DateTimeField::new('registrationDateTime'),
             DateTimeField::new('last_connection'),
             ChoiceField::new('roles')
@@ -101,8 +103,12 @@ class UserCrudController extends AbstractCrudController
         \EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore $formOptions, 
         AdminContext $context
     ): FormBuilderInterface {
+
+        print_r("TTest: Creating new");
+
         $formBuilder = parent::createNewFormBuilder($entityDto, $formOptions, $context);
         $this->addPasswordHashingListener($formBuilder);
+
         return $formBuilder;
     }
 }

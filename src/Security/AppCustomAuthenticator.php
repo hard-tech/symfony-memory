@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +47,12 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
+        }
+        
+        // Put last login
+        $user = $token->getUser();
+        if ($user instanceof User) {
+            $user->setLastConnection(new \DateTime('now'));
         }
 
         // For example:
