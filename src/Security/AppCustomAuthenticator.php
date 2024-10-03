@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Entity\User;
+use App\Enum\RolesName;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
 {
@@ -51,13 +53,13 @@ class AppCustomAuthenticator extends AbstractLoginFormAuthenticator
         
         // Put last login
         $user = $token->getUser();
-        if ($user instanceof User) {
-            $user->setLastConnection(new \DateTime('now'));
-        }
 
-        // For example:
-        return new RedirectResponse($this->urlGenerator->generate('AccueilRoute'));
-        // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        // TODO : Replace "ROLE_ADMIN" to RolesName::ADMIN
+        if(in_array('ROLE_ADMIN', $user->getRoles())) {
+            return new RedirectResponse($this->urlGenerator->generate('AdminRoute'));
+        }else{
+            return new RedirectResponse($this->urlGenerator->generate('AccueilRoute'));
+        }
     }
 
     protected function getLoginUrl(Request $request): string

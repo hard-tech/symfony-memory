@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Enum\RolesName;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
@@ -47,12 +48,13 @@ class UserCrudController extends AbstractCrudController
                 ->setFormTypeOption('choice_label', fn (UserLanguage $choice) => $choice->value),
 
             // TODO: Add registration date and last connection date fields coorectly !?
+            
             DateTimeField::new('registrationDateTime'),
             DateTimeField::new('last_connection'),
             ChoiceField::new('roles')
                 ->setChoices([
-                    'Admin' => 'ROLE_ADMIN',
-                    'User' => 'ROLE_USER',
+                    'Admin' => RolesName::ADMIN,
+                    'User' => RolesName::USER,
                 ])
                 ->allowMultipleChoices(),
         ];

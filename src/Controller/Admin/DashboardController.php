@@ -8,11 +8,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
+use App\Entity\Games;
 
 class DashboardController extends AbstractDashboardController
 {
     
-    #[Route('/admin', name: 'admin')]
+    // #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
          return $this->render('admin/index.html.twig');
@@ -43,6 +44,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToCrud('User', 'fas fa-list', User::class);
+        yield MenuItem::linkToLogout('Logout', 'fas fa-list');
+        // yield MenuItem::linkToCrud('Stats', 'fas fa-list', Games::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
 }
