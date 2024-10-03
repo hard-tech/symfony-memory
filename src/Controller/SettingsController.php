@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SettingsController extends AbstractController
 {
-    // #[Route('/settings', name: 'memory_settings')]
+    #[Route('/playground/settings', name: 'PlaygroundSettingsRoute')]
     public function index(): Response
     {
         return $this->render('settings/settings.html.twig', [
