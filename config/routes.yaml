@@ -8,4 +8,5 @@ AccueilRoute:
     path: /
     # the controller value has the format 'controller_class::method_name'
     controller: App\Controller\AccueilController::index
-
+AdminRoute:
+    path: /admin
