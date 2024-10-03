@@ -10,3 +10,13 @@ AccueilRoute:
     controller: App\Controller\AccueilController::index
 AdminRoute:
     path: /admin
+
+# PlaygroundRoute:
+#     path: /playground/play
+#     # the controller value has the format 'controller_class::method_name'
+#     controller: App\Controller\GameController::index
+
+PlaygroundSettingsRoute:
+    path: /playground/settings
+    # the controller value has the format 'controller_class::method_name'
+    controller: App\Controller\SettingsController::index

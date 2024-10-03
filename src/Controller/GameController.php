@@ -9,15 +9,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class GameController extends AbstractController
 {
-    #[Route('/game/select', name: 'memory_select')]
-    public function select(): Response
+    // #[Route('/game/select', name: 'memory_select')]
+    public function index(): Response
     {
-        return $this->render('memory/select.html.twig', [
+        return $this->render('game/game.html.twig', [
             'controllerName' => 'GameController',
         ]);
     }
 
-    #[Route('/game/', name: 'memory_play')]
+    #[Route('/playground/', name: 'PlaygroundRoute')]
     public function play(Request $request): Response
     {
         $theme = $request->query->get('theme');
