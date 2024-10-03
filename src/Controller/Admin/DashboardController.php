@@ -9,30 +9,22 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
 use App\Entity\Games;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 
 class DashboardController extends AbstractDashboardController
 {
+
+    public function __construct(
+        private AdminUrlGenerator $adminUrlGenerator
+    ){
+    }
     
     // #[Route('/admin', name: 'admin')]
     public function index(): Response
     {
-         return $this->render('admin/index.html.twig');
-        
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
+        $url = $this->adminUrlGenerator->setController(UserCrudController::class)->generateUrl();
+        return $this->redirect($url);
+        //  return $this->render('admin/index.html.twig');
     }
 
     public function configureDashboard(): Dashboard
@@ -43,8 +35,14 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToCrud('User', 'fas fa-list', User::class);
-        yield MenuItem::linkToLogout('Logout', 'fas fa-list');
+        yield MenuItem::subMenu('Manage user', 'fas fa-shield')->setSubItems([
+            MenuItem::linkToCrud('User', 'fas fa-users', User::class),
+        ]);
+        
+        yield MenuItem::subMenu('Manag Games', 'fas fa-gamepad')->setSubItems([
+            MenuItem::linkToCrud('Games', 'fas fa-console', Games::class)
+        ]);
+        yield MenuItem::linkToLogout('Logout', 'fas fa-user');
         // yield MenuItem::linkToCrud('Stats', 'fas fa-list', Games::class);
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }
