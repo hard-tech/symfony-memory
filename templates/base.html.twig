@@ -22,17 +22,17 @@
         <header class="bg-white shadow">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
                 <h1 class="text-3xl font-bold text-gray-800">
-                    Ortho-memory
+                    <a href="{{ path('AccueilRoute') }}">Ortho-memory</a>
                 </h1>
                 <nav class="w-max">
                     <ul class="flex space-x-4">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                         <li>
-                            <a href="/playground" class="text-gray-600 hover:text-gray-800">Playground</a>
+                            <a href="{{ path('PlaygroundSettingsRoute') }}" class="text-gray-600 hover:text-gray-800">Play</a>
                         </li>
                         {% if is_granted('ROLE_ADMIN') %}
                         <li>
-                            <a href="/admin" class="text-gray-600 hover:text-gray-800 px-3">Admin</a>
+                            <a href="{{ path('admin') }}" class="text-gray-600 hover:text-gray-800 px-3">Admin</a>
                         </li>
                         {% endif %}
                         <li>

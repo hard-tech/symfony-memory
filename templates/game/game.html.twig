@@ -71,10 +71,35 @@
                     ?
                 </div>
                 <div class="card-back">
-                    {{ card.number }}
+                    <img src="{{ pathsPicturesTheme[card.id] }}" alt="">
                 </div>
             </div>
         {% endfor %}
     </div>
 </div>
+
+<script>
+    document.querySelectorAll('.memory-card').forEach(card => {
+        card.addEventListener('click', function() {
+            this.classList.toggle('flipped');
+            const cardId = this.getAttribute('data-card-id');
+
+            fetch('/flipCard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token("flip_card") }}'
+                },
+                body: JSON.stringify({ cardId: cardId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Card flipped:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+</script>
 {% endblock %}
