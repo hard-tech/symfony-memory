@@ -8,5 +8,18 @@ AccueilRoute:
     path: /
     # the controller value has the format 'controller_class::method_name'
     controller: App\Controller\AccueilController::index
+
+PlaygroundRoute:
+    path: /playground
+    # the controller value has the format 'controller_class::method_name'
+    controller: App\Controller\PlaygroundController::index
+
 AdminRoute:
     path: /admin
+    # the controller value has the format 'controller_class::method_name'
+    controller: App\Controller\Admin\DashboardController::index
+
+# AdminGameRoute:
+#     path: /games
+#     # the controller value has the format 'controller_class::method_name'
+#     controller: App\Controller\Admin\GamesController::index
