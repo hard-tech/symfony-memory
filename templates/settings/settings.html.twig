@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Memory Game Settings{% endblock %}
+
+{% block body %}
+<style>
+    .settings-wrapper {
+        margin: 1em auto;
+        max-width: 600px;
+        width: 95%;
+        font: 18px/1.5 sans-serif;
+    }
+
+    .settings-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+    }
+
+    .settings-form label {
+        font-weight: bold;
+    }
+
+    .settings-form select, .settings-form button {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    .settings-form button {
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .settings-form button:hover {
+        background-color: #2980b9;
+    }
+</style>
+
+<div class="settings-wrapper">
+    <h1>Memory Game Settings</h1>
+
+    <form class="settings-form" method="get" action="{{ path('memory_play') }}">
+        <div>
+            <label for="theme">Select a Theme:</label>
+            <select name="theme" id="theme" required>
+                <option value="nature">Nature</option>
+                <option value="space">Space</option>
+                <option value="animals">Animals</option>
+                <option value="numbers">Numbers</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="difficulty">Select Difficulty:</label>
+            <select name="difficulty" id="difficulty" required>
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+        </div>
+
+        <button type="submit">Start Game</button>
+    </form>
+</div>
+
+{% endblock %}
