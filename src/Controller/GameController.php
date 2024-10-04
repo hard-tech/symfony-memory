@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Entity\Card;
 use App\Entity\Games;
+use App\Entity\User;
 use App\Entity\Theme;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Query\Expr\Math;
@@ -49,18 +50,26 @@ class GameController extends AbstractController
         $cardsData = $this->generateCards($pairCount);
         
         $gridSize = ceil(sqrt(count($cardsData))); 
-    
-        // Initialize the game in BDD with entityManager (Games entity, Card entity)
-    
-        $game = new Games();
-        $game->setGameId(Uuid::v4());
-        $game->setEndGame(false);
-        $game->setScore(0);
-        $game->setDifficulty($difficultyLevel);
-        $game->setUserEmail($token->getUser()->getUserIdentifier());
+        
+        $user = $this->getUser();
 
-       $em->persist($game);
-       $em->flush();
+        if ($user instanceof User) {
+            $firstName = $user->getFirstName();
+            $lastName = $user->getLastName();
+
+            // Initialize the game in BDD with entityManager (Games entity, Card entity)
+    
+            $game = new Games();
+            $game->setEndGame(false);
+            $game->setScore(0);
+            $game->setFirstName($firstName);
+            $game->setLastName($lastName);
+            $game->setDifficulty($difficultyLevel);
+            $game->setUserEmail($token->getUser()->getUserIdentifier());
+
+            $em->persist($game);
+            $em->flush();
+        }
 
        return $this->render('game/game.html.twig', [
            'pathsPicturesTheme' => $pathsPicturesTheme,
