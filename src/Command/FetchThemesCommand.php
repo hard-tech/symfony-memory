@@ -10,6 +10,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Exception\RuntimeException;
 
 #[AsCommand(
     name: 'app:fetch-themes',
@@ -40,23 +41,28 @@ class FetchThemesCommand extends Command
         $params = [
             'q' => $themeName,
             'image_type' => 'photo',
-            'per_page' => 10,
+            'per_page' => 16,
         ];
 
         $images = $this->pixabayService->searchImages($params);
+
+        // Vérification si le nombre d'images retournées est bien de 16
+        if (count($images) < 16) {
+            throw new RuntimeException('Erreur: Moins de 16 images ont été récupérées.');
+        }
 
         foreach ($images as $image) {
             $theme = new Theme();
             $theme->setName($themeName);
             $theme->setUrl($image['webformatURL']);
-            $theme->setType(ThemeType::IMAGE); // Assuming all fetched items are of type 'image'
+            $theme->setType(ThemeType::IMAGE); // Tous les éléments sont considérés comme des images
 
             $this->entityManager->persist($theme);
         }
 
         $this->entityManager->flush();
 
-        $output->writeln('Themes have been successfully fetched and stored.');
+        $output->writeln('Les thèmes ont été récupérés et stockés avec succès.');
 
         return Command::SUCCESS;
     }
