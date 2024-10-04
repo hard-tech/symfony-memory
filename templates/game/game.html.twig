@@ -24,10 +24,11 @@
         position: relative;
         cursor: pointer;
         transition: transform 0.3s;
+        overflow: hidden;
     }
 
     .memory-card:hover {
-        transform: scale(1.1);
+        transform: scale(1.0);
     }
 
     .card-front, .card-back {
@@ -41,6 +42,12 @@
         border-radius: 5px;
         backface-visibility: hidden;
         transition: transform 0.3s;
+    }
+
+    .card-front img, .card-back img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .card-front {
@@ -61,7 +68,20 @@
     .flipped .card-back {
         transform: rotateY(0deg);
     }
+
+    .restart-button {
+        display: none;
+        margin: 20px auto;
+        padding: 10px 20px;
+        font-size: 18px;
+        background-color: #3498db;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 </style>
+
 
 <div>
     <div class="memory-grid">
@@ -71,10 +91,87 @@
                     ?
                 </div>
                 <div class="card-back">
-                    {{ card.number }}
+                    <img src="{{ pathsPicturesTheme[card.id] }}" alt="" class="">
                 </div>
             </div>
         {% endfor %}
     </div>
+    <button class="restart-button" onclick="location.reload()">Restart</button>
 </div>
+
+<script>
+    let flippedCards = [];
+    let matchedPairs = 0;
+    const totalPairs = {{ cards|length / 2 }};
+    const gameId = {{ game.id }}; 
+    const gameDifficulty = {{ game.difficulty }};
+    let startTime = null; 
+    let timePerPair = []; 
+    let lastFlipTime = null; 
+
+    document.querySelectorAll('.memory-card').forEach(card => {
+        card.addEventListener('click', function() {
+            
+            if (!startTime) {
+                startTime = Date.now();
+                lastFlipTime = startTime; 
+            }
+            
+            if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+                this.classList.add('flipped');
+                flippedCards.push(this);
+                
+                if (flippedCards.length === 2) {
+                    const cardId1 = flippedCards[0].getAttribute('data-card-id');
+                    const cardId2 = flippedCards[1].getAttribute('data-card-id');
+
+                    if (cardId1 === cardId2) {
+                        matchedPairs++;
+                        flippedCards = [];
+                        
+                        let now = Date.now();
+                        let timeForThisPair = (now - lastFlipTime) / 1000; 
+                        timePerPair.push(timeForThisPair);
+                        lastFlipTime = now; 
+
+                        if (matchedPairs === totalPairs) {
+                            const totalTime = (now - startTime) / 1000; 
+                            setTimeout(() => {
+                                alert('Félicitations ! Vous avez trouvé toutes les paires en ' + totalTime + ' secondes.');
+                                document.querySelector('.restart-button').style.display = 'block';
+                            }, 200);
+
+                            fetch('/api/game/stats', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    gameId: gameId,  
+                                    totalTime: totalTime,  
+                                    difficulty: gameDifficulty,
+                                }),
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    console.log('Game successfully updated');
+                                } else {
+                                    console.error('Error updating the game', data.message);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        }
+                    } else {
+                        setTimeout(() => {
+                            flippedCards.forEach(card => card.classList.remove('flipped'));
+                            flippedCards = [];
+                        }, 1000);
+                    }
+                }
+            }
+        });
+    });
+</script>
+
 {% endblock %}

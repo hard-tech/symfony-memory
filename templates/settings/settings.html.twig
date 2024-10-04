@@ -47,10 +47,9 @@
         <div>
             <label for="theme">Select a Theme:</label>
             <select name="theme" id="theme" required>
-                <option value="nature">Nature</option>
-                <option value="space">Space</option>
-                <option value="animals">Animals</option>
-                <option value="numbers">Numbers</option>
+                {% for themeName in themesNames %}
+                    <option value="{{ themeName }}"> {{themeName}} </option>
+                {% endfor %}
             </select>
         </div>
 

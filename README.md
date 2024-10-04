@@ -1,3 +1,5 @@
+**File: /Users/coding/Documents/École/Project/PHP_Symfony/symfony-memory/README.md**
+```markdown
 # Symfony Memory
 
 Bienvenue dans **Symfony Memory**! 🧠🎉
@@ -37,6 +39,16 @@ Pour installer et exécuter Symfony Memory sur votre machine locale, suivez ces 
     symfony server:start
     ```
 
+## Commande Personnalisée
+
+Symfony Memory inclut une commande personnalisée pour créer un thème de carte. Utilisez la commande suivante pour générer un thème de cartes "chaton":
+
+```bash
+php bin/console app:fetch-themes chaton
+```
+
+Cette commande récupère et configure un thème de cartes basé sur des images de chatons, ajoutant une touche adorable à votre expérience de jeu.
+
 ## Contribution
 
 Les contributions sont les bienvenues! Pour contribuer:
@@ -56,3 +68,4 @@ Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de 
 Pour toute question ou suggestion, n'hésitez pas à ouvrir une issue ou à me contacter à [votre-email@example.com](mailto:votre-email@example.com).
 
 Amusez-vous bien avec Symfony Memory! 🧩✨
+```

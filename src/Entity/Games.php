@@ -6,7 +6,9 @@ use App\Repository\GamesRepository;
 use App\Controller\Admin\StatsController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: GamesRepository::class)]
 class Games
@@ -37,6 +39,21 @@ class Games
     #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'games')]
     private Collection $users;
 
+    // #[ORM\Column(type: 'uuid')]
+    // private ?Uuid $gameId = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $lastName = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $UserEmail = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $finishedAt = null;
+
     public function __construct()
     {
         $this->cards = new ArrayCollection();
@@ -52,11 +69,11 @@ class Games
     {
         return $this->difficulty;
     }
-
-    public function setDifficulty(int $difficulty): static
+    
+    public function setDifficulty(int $difficulty): self
     {
         $this->difficulty = $difficulty;
-
+    
         return $this;
     }
 
@@ -134,6 +151,66 @@ class Games
         if ($this->users->removeElement($user)) {
             $user->removeGame($this);
         }
+
+        return $this;
+    }
+
+    // public function getGameId(): ?Uuid
+    // {
+    //     return $this->gameId;
+    // }
+
+    // public function setGameId(Uuid $gameId): static
+    // {
+    //     $this->gameId = $gameId;
+
+    //     return $this;
+    // }
+
+    public function getUserEmail(): ?string
+    {
+        return $this->UserEmail;
+    }
+
+    public function setUserEmail(string $UserEmail): static
+    {
+        $this->UserEmail = $UserEmail;
+
+        return $this;
+    }
+
+    public function getFirstName():?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName():?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getFinishedAt(): ?\DateTimeInterface
+    {
+        return $this->finishedAt;
+    }
+
+    public function setFinishedAt(?\DateTimeInterface $finishedAt): static
+    {
+        $this->finishedAt = $finishedAt;
 
         return $this;
     }
