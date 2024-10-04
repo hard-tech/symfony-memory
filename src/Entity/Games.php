@@ -6,6 +6,7 @@ use App\Repository\GamesRepository;
 use App\Controller\Admin\StatsController;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -49,6 +50,9 @@ class Games
 
     #[ORM\Column(length: 255)]
     private ?string $UserEmail = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $finishedAt = null;
 
     public function __construct()
     {
@@ -195,6 +199,18 @@ class Games
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getFinishedAt(): ?\DateTimeInterface
+    {
+        return $this->finishedAt;
+    }
+
+    public function setFinishedAt(?\DateTimeInterface $finishedAt): static
+    {
+        $this->finishedAt = $finishedAt;
 
         return $this;
     }
