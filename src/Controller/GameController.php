@@ -98,7 +98,7 @@ class GameController extends AbstractController
             'easy' => 8,
             'medium' => 10,
             'hard' => 15,
-            default => 10,
+            default => 8,
         };
     }
 
@@ -132,28 +132,28 @@ class GameController extends AbstractController
         return new JsonResponse(['status' => 'error', 'message' => 'Card not found'], Response::HTTP_NOT_FOUND);
     }
 
-    #[Route('/winGame', name: 'win_game', methods: ['POST'])]
-    public function winGame(Request $request, EntityManagerInterface $em): Response
-    {
-        $data = json_decode($request->getContent(), true);
-        $gameId = $data['gameId'];
+    // #[Route('/api/game/update', name: 'win_game', methods: ['POST'])]
+    // public function updateGameStats(Request $request, EntityManagerInterface $em): Response
+    // {
+    //     $data = json_decode($request->getContent(), true);
+    //     $gameId = $data['gameId'];
 
-        $game = $em->getRepository(Games::class)->findOneBy(['gameId' => $gameId]);
+    //     $game = $em->getRepository(Games::class)->findOneBy(['gameId' => $gameId]);
 
-        if ($game) {
-            $game->setEndGame(true);
-            $em->persist($game);
-            $em->flush();
+    //     if ($game) {
+    //         $game->setEndGame(true);
+    //         $em->persist($game);
+    //         $em->flush();
 
-            return new JsonResponse(['status' => 'success', 'gameId' => $game->getId()]);
-        }
+    //         return new JsonResponse(['status' => 'success', 'gameId' => $game->getId()]);
+    //     }
 
-        return new JsonResponse(['status' => 'error', 'message' => 'Game not found'], Response::HTTP_NOT_FOUND);
-    }
+    //     return new JsonResponse(['status' => 'error', 'message' => 'Game not found'], Response::HTTP_NOT_FOUND);
+    // }
 
     // Ajouter cette méthode dans GameController
-    #[Route('/api/game/stats', name: 'update_game_stats', methods: ['POST'])]
-    public function updateGameStats(Request $request, EntityManagerInterface $em): JsonResponse
+    #[Route('/api/game/win', name: 'update_game_stats', methods: ['POST'])]
+    public function winGame(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -178,7 +178,7 @@ class GameController extends AbstractController
         // Mettre à jour les valeurs du jeu
         $game->setScore($score);
         $game->setFinishedAt(new \DateTime()); // Par exemple, on enregistre le moment de fin
-
+        $game->setEndGame(true);
         // Sauvegarder dans la base de données
         $em->persist($game);
         $em->flush();
