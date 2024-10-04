@@ -95,7 +95,7 @@ class GameController extends AbstractController
     private function getPairCountByDifficulty(string $difficulty): int
     {
         return match ($difficulty) {
-            'easy' => 2,
+            'easy' => 8,
             'medium' => 10,
             'hard' => 15,
             default => 10,
